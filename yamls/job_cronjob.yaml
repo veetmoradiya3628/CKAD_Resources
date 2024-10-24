@@ -1,0 +1,34 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: math-add-job
+spec:
+  completions: 1 # Number of pods that should be created by this job
+  parallelism: 1 # Number of pods to run in parallel
+  template:
+    spec:
+      containers:
+      - name: math-add 
+        image: python:3.6 
+        command: ["python"]
+        args: ["-c", "print(1+1)"]
+      restartPolicy: Never # This means that the pod will not be restarted
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: math-add-cronjob
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      completions: 1
+      parallelism: 1
+      template:
+        spec:
+          containers:
+          - name: math-add
+            image: python:3.6
+            command: ["python"]
+            args: ["-c", "print(1+1)"]
+          restartPolicy: Never
