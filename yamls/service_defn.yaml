@@ -1,0 +1,30 @@
+# Service definition file
+apiVersion: v1
+kind: Service
+metadata:
+    name: myapp-service
+spec:
+    type: NodePort
+    ports:
+        - targetPort: 80
+          port: 80
+          nodePort: 30080 # range can be 30000 - 32767
+    selector: # to map the service with pod definition
+        app: my-app
+        type: front-end
+---
+# ClusterIP Service defn
+apiVersion: v1
+kind: Service
+metadata:
+    name: backend
+spec:
+    type: ClusterIP
+    ports:
+        - targetPort: 80
+          port: 80
+    selector:
+        app: myapp
+        type: back-end
+
+
